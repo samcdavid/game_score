@@ -3,7 +3,7 @@ defmodule Fixtures do
 
   defmacro __using__(_options) do
     quote do
-      alias GameScore.Core.{Player, Score}
+      alias GameScore.Core.{Game, Player, Score}
       import Fixtures, only: :functions
     end
   end
