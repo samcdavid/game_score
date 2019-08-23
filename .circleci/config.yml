@@ -20,12 +20,15 @@ jobs:
                 keys:
                     - v0-build-{{ .Branch }}
                     - v0-build
+
+            # Acutally Build and Test
             - run: mix local.hex --force
             - run: mix local.rebar --force
             - run: mix deps.get
             - run: mix deps.compile
             - run: mix format --check-formatted
             - run: mix test
+
             - save_cache:
                 key: v0-build-{{ .Branch }}
                 paths: "_build"
