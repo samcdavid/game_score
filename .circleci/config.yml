@@ -1,0 +1,43 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@volatile
+
+jobs:
+    build:
+        docker:
+          - image: circleci/elixir:1.9.1
+            environment:
+              MIX_ENV=test
+        steps:
+            - checkout
+            - restore_cache:
+                keys:
+                    - v0-mix-{{ .Branch }}-{{ checksum "mix.lock" }
+                    - v0-mix-{{ .Branch }}
+                    - v0-mix
+            - restore_cache:
+                keys:
+                    - v0-build-{{ .Branch }}
+                    - v0-build
+            - run: mix local.hex --force
+            - run: mix local.rebar --force
+            - run: mix deps.get
+            - run: mix deps.compile
+            - run: mix format --check-formatted
+            - run: mix test
+            - save_cache:
+                key: v0-build-{{ .Branch }}
+                paths: "_build"
+            - save_cache:
+                key: v0-build
+                paths: "_build"
+            - slack/status:
+                fail_only: true
+                only_for_branches: master
+
+workflows:
+    version: 2
+    run_build:
+        jobs:
+            - build
