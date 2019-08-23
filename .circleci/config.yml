@@ -13,7 +13,7 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - v0-mix-{{ .Branch }}-{{ checksum "mix.lock" }
+                    - v0-mix-{{ .Branch }}-{{ checksum "mix.lock" }}
                     - v0-mix-{{ .Branch }}
                     - v0-mix
             - restore_cache:
