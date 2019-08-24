@@ -27,8 +27,12 @@ defmodule GameScore.Core.Player do
     iex> GameScore.Core.Player.new("")
     {:error, "name cannot be empty"}
   """
-  def new(name) when is_nil(name) do
+  def new(nil) do
     {:error, "name cannot be nil"}
+  end
+
+  def new("") do
+    {:error, "name cannot be empty"}
   end
 
   def new(name) when is_binary(name) do
@@ -37,10 +41,7 @@ defmodule GameScore.Core.Player do
       scores: []
     }
 
-    case name do
-      "" -> {:error, "name cannot be empty"}
-      _ -> {:ok, player}
-    end
+    {:ok, player}
   end
 
   def new(_name) do
@@ -63,7 +64,7 @@ defmodule GameScore.Core.Player do
     iex> Player.add_score(player, score1)
     %Player{name: "Team A", scores: [%Score{points: 5, note: "round 1"}]}
   """
-  def add_score(player = %__MODULE__{}, score = %Score{}) do
+  def add_score(%__MODULE__{} = player, %Score{} = score) do
     %{player | scores: [score | player.scores]}
   end
 

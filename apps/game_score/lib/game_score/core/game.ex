@@ -42,7 +42,7 @@ defmodule GameScore.Core.Game do
     add_player(game, player)
   end
 
-  def add_player(game = %{}, player = %GameScore.Core.Player{}) do
+  def add_player(%{} = game, %GameScore.Core.Player{} = player) do
     case Map.get(game, player.name) do
       nil -> Map.put(game, player.name, player)
       _ -> {:error, "player already exists"}

@@ -13,28 +13,28 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - v0-mix-{{ .Branch }}-{{ checksum "mix.lock" }}
-                    - v0-mix-{{ .Branch }}
-                    - v0-mix
-            - restore_cache:
-                keys:
-                    - v0-build-{{ .Branch }}
-                    - v0-build
+                    - v0-{{ .Branch }}
+                    - v0
 
             # Acutally Build and Test
             - run: mix local.hex --force
             - run: mix local.rebar --force
+            - run: mix deps.clean --unused
             - run: mix deps.get
             - run: mix deps.compile
             - run: mix format --check-formatted
             - run: mix test
 
             - save_cache:
-                key: v0-build-{{ .Branch }}
-                paths: "_build"
+                key: v0-{{ .Branch }}-{{ epoch }}
+                paths:
+                    - _build
+                    - deps
             - save_cache:
-                key: v0-build
-                paths: "_build"
+                key: v0-{{ epoch }}
+                paths:
+                    - _build
+                    - deps
             - slack/status:
                 fail_only: true
                 only_for_branches: master
