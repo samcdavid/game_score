@@ -10,13 +10,11 @@ defmodule GameScore.Core.ScoreTest do
     check all points <- integer(),
               floats <- float(),
               note <- binary() do
-                assert {:ok, %Score{points: points, note: note}} ==
-                  Score.new(points: points, note: note)
+      assert {:ok, %Score{points: points, note: note}} ==
+               Score.new(points: points, note: note)
 
-
-                assert {:ok, %Score{points: floats, note: note}} ==
-                  Score.new(points: floats, note: note)
-
+      assert {:ok, %Score{points: floats, note: note}} ==
+               Score.new(points: floats, note: note)
     end
   end
 
@@ -29,7 +27,7 @@ defmodule GameScore.Core.ScoreTest do
   property "it always defaults note to an empty string" do
     check all points <- integer() do
       assert {:ok, %Score{points: points, note: ""}} ==
-        Score.new(points: points)
+               Score.new(points: points)
     end
   end
 
