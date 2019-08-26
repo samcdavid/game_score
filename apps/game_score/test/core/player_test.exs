@@ -1,7 +1,6 @@
 defmodule GameScore.Core.PlayerTest do
   use ExUnit.Case
   use ExUnitProperties
-  use Fixtures
   use Generators
 
   doctest Player

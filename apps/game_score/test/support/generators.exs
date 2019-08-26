@@ -3,6 +3,7 @@ defmodule Generators do
 
   defmacro __using__(_options) do
     quote do
+      alias GameScore.Core.{Game, Player, Score}
       import Generators, only: :functions
     end
   end

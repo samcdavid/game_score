@@ -37,7 +37,7 @@ defmodule GameScore.Core.Game do
     iex> GameScore.Core.Game.add_player(%{}, player)
     %{"Team Joe" => %GameScore.Core.Player{name: "Team Joe", scores: []}}
   """
-  def add_player(game = %{}, name) when is_binary(name) do
+  def add_player(%{} = game, name) when is_binary(name) do
     {:ok, player} = GameScore.Core.Player.new(name)
     add_player(game, player)
   end
