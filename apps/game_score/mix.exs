@@ -35,7 +35,9 @@ defmodule GameScore.MixProject do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    []
+    [
+      {:stream_data, "~> 0.1", only: :test}
+    ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
