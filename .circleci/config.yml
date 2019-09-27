@@ -13,8 +13,7 @@ jobs:
             - checkout
             - restore_cache:
                 keys:
-                    - v0-{{ .Branch }}
-                    - v0
+                    - v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
 
             # Acutally Build and Test
             - run: mix local.hex --force
@@ -26,12 +25,7 @@ jobs:
             - run: mix test
 
             - save_cache:
-                key: v0-{{ .Branch }}-{{ epoch }}
-                paths:
-                    - _build
-                    - deps
-            - save_cache:
-                key: v0-{{ epoch }}
+                key: v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
                 paths:
                     - _build
                     - deps
