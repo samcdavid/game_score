@@ -126,7 +126,7 @@ defmodule GameScore.Boundary.GameSession do
 
     {
       :reply,
-      {"#{player_name} score", player_total_score},
+      {player_name, player_total_score},
       {game_name, updated_game}
     }
   end

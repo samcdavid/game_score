@@ -25,7 +25,7 @@ defmodule GameScoreTest do
 
     result = GameScore.add_player_score(game_name, player_name, score.points, score.note)
 
-    assert {"#{player_name} score", score.points} == result
+    assert {player_name, score.points} == result
   end
 
   test "it can get the score" do

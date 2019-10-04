@@ -19,14 +19,14 @@ defmodule GameScore.Boundary.GameSessionTest do
     }
 
     player1 = Player.add_score(player1, score1)
-    player1_first_score = {"#{player1_name} score", score1.points}
+    player1_first_score = {player1_name, score1.points}
     player1 = Player.add_score(player1, score3)
-    player1_second_score = {"#{player1_name} score", score1.points + score3.points}
+    player1_second_score = {player1_name, score1.points + score3.points}
 
     player2 = Player.add_score(player2, score2)
-    player2_first_score = {"#{player2_name} score", score2.points}
+    player2_first_score = {player2_name, score2.points}
     player2 = Player.add_score(player2, score4)
-    player2_second_score = {"#{player2_name} score", score2.points + score4.points}
+    player2_second_score = {player2_name, score2.points + score4.points}
 
     scores = %{
       player1_name => score1.points + score3.points,
