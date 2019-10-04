@@ -48,9 +48,9 @@ defmodule GameScore.Boundary.GameSession do
     - name: A required name tuple for identifying the game.
     - player_name: A unique name for the player being added to the game.
     - points: A number for the points value to attribute to the player.
-    - note: An optional string to note why the points were attributed to the player.
+    - note: A string to note why the points were attributed to the player.
   """
-  def add_player_score(name, player_name, points, note \\ "") do
+  def add_player_score(name, player_name, points, note) do
     GenServer.call(via(name), {:add_player_score, player_name, points, note})
   end
 
