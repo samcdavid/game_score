@@ -7,7 +7,14 @@ defmodule GameScore.Application do
 
   def start(_type, _args) do
     children = [
-      # GameScore.Worker
+      {
+        Registry,
+        [name: GameScore.Registry.GameSession, keys: :unique]
+      },
+      {
+        DynamicSupervisor,
+        [name: GameScore.Supervisor.GameSession, strategy: :one_for_one]
+      }
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: GameScore.Supervisor)

@@ -4,6 +4,7 @@ defmodule Generators do
   defmacro __using__(_options) do
     quote do
       alias GameScore.Core.{Game, Player, Score}
+      alias GameScore.Boundary.GameSession
       import Generators, only: :functions
     end
   end
@@ -21,6 +22,8 @@ defmodule Generators do
       name
     end
   end
+
+  def gen_game_name(), do: gen_player_name()
 
   def gen_score() do
     gen all points <- integer(),
