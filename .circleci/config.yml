@@ -1,37 +1,36 @@
 version: 2.1
 
-orbs:
-  slack: circleci/slack@volatile
-
 jobs:
-    build:
-        docker:
-          - image: circleci/elixir:1.9.1
-            environment:
-              MIX_ENV=test
-        steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
+  umbrella:
+    working_directory: ~/project/game_score_umbrella
+    docker:
+      - image: circleci/elixir:1.9.1
+        environment:
+          MIX_ENV=test
+    steps:
+      - checkout:
+          path: ~/project
+      - restore_cache:
+          keys:
+              - v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
 
-            # Acutally Build and Test
-            - run: mix local.hex --force
-            - run: mix local.rebar --force
-            - run: mix deps.clean --unused
-            - run: mix deps.get
-            - run: mix deps.compile
-            - run: mix format --check-formatted
-            - run: mix test
+      # Acutally Build and Test
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+      - run: mix deps.clean --unused
+      - run: mix deps.get
+      - run: mix deps.compile
+      - run: mix format --check-formatted
+      - run: mix test
 
-            - save_cache:
-                key: v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
-                paths:
-                    - _build
-                    - deps
+      - save_cache:
+          key: v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
+          paths:
+            - _build
+            - deps
 
 workflows:
-    version: 2
-    run_build:
-        jobs:
-            - build
+  version: 2
+  run_build:
+    jobs:
+      - umbrella
