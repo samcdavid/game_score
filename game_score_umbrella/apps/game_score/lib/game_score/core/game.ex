@@ -15,9 +15,9 @@ defmodule GameScore.Core.Game do
   ## Examples
 
     iex> GameScore.Core.Game.new()
-    %{players: []}
+    %{}
   """
-  def new(), do: %{players: []}
+  def new(), do: %{}
 
   @doc """
   Add a player to the game. This can be done by providing a string for the
@@ -30,12 +30,12 @@ defmodule GameScore.Core.Game do
 
   ## Examples
 
-    iex> GameScore.Core.Game.add_player(%{players: []}, "Sam")
-    %{:players => ["Sam"], "Sam" => %GameScore.Core.Player{name: "Sam", scores: []}}
+    iex> GameScore.Core.Game.add_player(%{}, "Sam")
+    %{"Sam" => %GameScore.Core.Player{name: "Sam", scores: []}}
 
     iex> player = %GameScore.Core.Player{name: "Team Joe", scores: []}
-    iex> GameScore.Core.Game.add_player(%{players: []}, player)
-    %{:players => ["Team Joe"], "Team Joe" => %GameScore.Core.Player{name: "Team Joe", scores: []}}
+    iex> GameScore.Core.Game.add_player(%{}, player)
+    %{"Team Joe" => %GameScore.Core.Player{name: "Team Joe", scores: []}}
   """
   def add_player(%{} = game, name) when is_binary(name) do
     {:ok, player} = GameScore.Core.Player.new(name)
@@ -44,13 +44,8 @@ defmodule GameScore.Core.Game do
 
   def add_player(%{} = game, %GameScore.Core.Player{} = player) do
     case Map.get(game, player.name) do
-      nil ->
-        game
-        |> Map.put(player.name, player)
-        |> Map.update(:players, [], &[player.name | &1])
-
-      _ ->
-        {:error, "player already exists"}
+      nil -> Map.put(game, player.name, player)
+      _ -> {:error, "player already exists"}
     end
   end
 end
