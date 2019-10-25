@@ -98,6 +98,20 @@ defmodule GameScore do
   end
 
   @doc """
+  Get a list of all players in a game.
+
+  ## Parameters
+
+    - game_name: A unique string that is the name of the game.
+  """
+  def get_player_list(game_name) do
+    case get_game(game_name) do
+      %{} = game -> Enum.map(game, fn {k, _} -> k end)
+      {:error, _} = response -> response
+    end
+  end
+
+  @doc """
   End a game.
 
   ## Parameters
