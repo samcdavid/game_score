@@ -13,7 +13,7 @@ defmodule GameScore.Core.GameTest do
         Game.new()
         |> Game.add_player(player)
 
-      assert %{name => player} == game
+      assert %{:players => [name], name => player} == game
       assert {:error, "player already exists"} == Game.add_player(game, name)
     end
   end
@@ -27,12 +27,17 @@ defmodule GameScore.Core.GameTest do
         Game.new()
         |> Game.add_player(player1)
 
-      assert %{name1 => player1} == game
+      assert %{:players => [name1], name1 => player1} == game
 
       updated_game = Game.add_player(game, name2)
 
-      assert %{name1 => player1, name2 => %Player{name: name2, scores: []}} ==
-               updated_game
+      expected = %{
+        :players => [name2, name1],
+        name1 => player1,
+        name2 => %Player{name: name2, scores: []}
+      }
+
+      assert expected == updated_game
     end
   end
 end
