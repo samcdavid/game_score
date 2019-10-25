@@ -29,9 +29,6 @@ jobs:
                 paths:
                     - _build
                     - deps
-            - slack/status:
-                fail_only: true
-                only_for_branches: master
 
 workflows:
     version: 2
