@@ -14,6 +14,7 @@ defmodule GameScore.Boundary.GameSessionTest do
     {:ok, player2} = Player.new(player2_name)
 
     added_player = %{
+      :players => [player2_name, player1_name],
       player1_name => player1,
       player2_name => player2
     }
@@ -34,6 +35,7 @@ defmodule GameScore.Boundary.GameSessionTest do
     }
 
     game = %{
+      :players => [player2_name, player1_name],
       player1_name => player1,
       player2_name => player2
     }

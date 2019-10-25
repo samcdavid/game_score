@@ -42,6 +42,7 @@ defmodule GameScoreTest do
     result = GameScore.get_game(game_name)
 
     expected = %{
+      :players => [player_name],
       player_name => %Player{name: player_name, scores: []}
     }
 

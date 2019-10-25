@@ -133,7 +133,9 @@ defmodule GameScore.Boundary.GameSession do
 
   def handle_call(:get_game_score, _, {_game_name, game} = state) do
     score_map =
-      Enum.reduce(game, %{}, fn {player_name, player}, acc ->
+      game
+      |> Enum.filter(fn {k, _} -> k != :players end)
+      |> Enum.reduce(%{}, fn {player_name, player}, acc ->
         Map.put(acc, player_name, Player.total_score(player))
       end)
 
