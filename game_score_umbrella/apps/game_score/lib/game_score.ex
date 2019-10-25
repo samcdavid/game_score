@@ -34,9 +34,13 @@ defmodule GameScore do
     - player_name: The string name of the player or team.
   """
   def add_player(game_name, player_name) do
-    game_name
-    |> name_tuple()
-    |> GameSession.add_player(player_name)
+    fun = fn ->
+      game_name
+      |> name_tuple()
+      |> GameSession.add_player(player_name)
+    end
+
+    if_game_exists(game_name, fun)
   end
 
   @doc """
@@ -50,9 +54,13 @@ defmodule GameScore do
     - note: An optional string to add meta data to the score.
   """
   def add_player_score(game_name, player_name, points, note \\ "") do
-    game_name
-    |> name_tuple()
-    |> GameSession.add_player_score(player_name, points, note)
+    fun = fn ->
+      game_name
+      |> name_tuple()
+      |> GameSession.add_player_score(player_name, points, note)
+    end
+
+    if_game_exists(game_name, fun)
   end
 
   @doc """
@@ -63,9 +71,13 @@ defmodule GameScore do
     - game_name: A unique string that is the name of the game.
   """
   def get_game_score(game_name) do
-    game_name
-    |> name_tuple()
-    |> GameSession.get_game_score()
+    fun = fn ->
+      game_name
+      |> name_tuple()
+      |> GameSession.get_game_score()
+    end
+
+    if_game_exists(game_name, fun)
   end
 
   @doc """
@@ -76,9 +88,13 @@ defmodule GameScore do
     - game_name: A unique string that is the name of the game.
   """
   def get_game(game_name) do
-    game_name
-    |> name_tuple()
-    |> GameSession.get_game()
+    fun = fn ->
+      game_name
+      |> name_tuple()
+      |> GameSession.get_game()
+    end
+
+    if_game_exists(game_name, fun)
   end
 
   @doc """
@@ -89,10 +105,24 @@ defmodule GameScore do
     - game_name: A unique string that is the name of the game.
   """
   def end_game(game_name) do
-    game_name
-    |> name_tuple()
-    |> GameSession.end_game()
+    fun = fn ->
+      game_name
+      |> name_tuple()
+      |> GameSession.end_game()
+    end
+
+    if_game_exists(game_name, fun)
   end
 
   defp name_tuple(name), do: {:game, name}
+
+  defp if_game_exists(game_name, fun) do
+    process_name = name_tuple(game_name)
+    process_list = Registry.lookup(GameScore.Registry.GameSession, process_name)
+
+    case Enum.empty?(process_list) do
+      true -> {:error, "#{game_name} could not be found."}
+      _ -> fun.()
+    end
+  end
 end
