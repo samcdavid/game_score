@@ -15,8 +15,9 @@ defmodule GameScoreTest do
     new_player_name = Enum.at(gen_player_name(), 3)
 
     result = GameScore.add_player(game_name, new_player_name)
+    expected = %{name: new_player_name, scores: []}
 
-    assert {:ok, _} = Map.fetch(result, new_player_name)
+    assert {:ok, expected} == Map.fetch(result, new_player_name)
   end
 
   test "it can add points to a player" do
@@ -39,10 +40,11 @@ defmodule GameScoreTest do
   test "it can get the game" do
     {game_name, player_name} = new_game_fixture()
 
+    GameScore.add_player_score(game_name, player_name, 10)
     result = GameScore.get_game(game_name)
 
     expected = %{
-      player_name => %Player{name: player_name, scores: []}
+      player_name => %{name: player_name, scores: [%{points: 10, note: ""}]}
     }
 
     assert expected == result

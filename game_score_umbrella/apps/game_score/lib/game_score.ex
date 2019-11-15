@@ -40,7 +40,8 @@ defmodule GameScore do
       |> GameSession.add_player(player_name)
     end
 
-    if_game_exists(game_name, fun)
+    {:ok, game} = if_game_exists(game_name, fun)
+    sanitize_game(game)
   end
 
   @doc """
@@ -60,7 +61,8 @@ defmodule GameScore do
       |> GameSession.add_player_score(player_name, points, note)
     end
 
-    if_game_exists(game_name, fun)
+    {:ok, response} = if_game_exists(game_name, fun)
+    response
   end
 
   @doc """
@@ -77,7 +79,8 @@ defmodule GameScore do
       |> GameSession.get_game_score()
     end
 
-    if_game_exists(game_name, fun)
+    {:ok, scores} = if_game_exists(game_name, fun)
+    scores
   end
 
   @doc """
@@ -94,7 +97,8 @@ defmodule GameScore do
       |> GameSession.get_game()
     end
 
-    if_game_exists(game_name, fun)
+    {:ok, game} = if_game_exists(game_name, fun)
+    sanitize_game(game)
   end
 
   @doc """
@@ -125,7 +129,8 @@ defmodule GameScore do
       |> GameSession.end_game()
     end
 
-    if_game_exists(game_name, fun)
+    {:ok, response} = if_game_exists(game_name, fun)
+    response
   end
 
   defp name_tuple(name), do: {:game, name}
@@ -136,7 +141,20 @@ defmodule GameScore do
 
     case Enum.empty?(process_list) do
       true -> {:error, "#{game_name} could not be found."}
-      _ -> fun.()
+      _ -> {:ok, fun.()}
     end
+  end
+
+  defp sanitize_game(game) do
+    Enum.map(game, fn {player_name, player} ->
+      scores = sanitize_scores(player.scores)
+      new_player = %{player | scores: scores}
+      {player_name, Map.from_struct(new_player)}
+    end)
+    |> Enum.into(%{})
+  end
+
+  defp sanitize_scores(scores) do
+    Enum.map(scores, &Map.from_struct/1)
   end
 end
