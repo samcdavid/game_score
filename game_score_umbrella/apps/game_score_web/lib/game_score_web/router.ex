@@ -23,5 +23,6 @@ defmodule GameScoreWeb.Router do
     pipe_through :api
     resources "/game-session", GameSessionController, only: [:create, :delete, :show]
     resources "/player", PlayerController, only: [:create]
+    resources "/score", ScoreController, only: [:create]
   end
 end
