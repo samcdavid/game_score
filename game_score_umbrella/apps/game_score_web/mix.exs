@@ -44,7 +44,8 @@ defmodule GameScoreWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:game_score, in_umbrella: true},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:stream_data, "~> 0.1", only: [:dev, :test]}
     ]
   end
 
