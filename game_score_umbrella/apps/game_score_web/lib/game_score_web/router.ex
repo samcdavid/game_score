@@ -19,8 +19,10 @@ defmodule GameScoreWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", GameScoreWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", GameScoreWeb do
+    pipe_through :api
+    resources "/game-session", GameSessionController, only: [:create, :delete, :show]
+    resources "/player", PlayerController, only: [:create]
+    resources "/score", ScoreController, only: [:create]
+  end
 end
